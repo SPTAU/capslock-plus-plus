@@ -29,10 +29,9 @@ global lang_yd_phrase:="--------------------------------------短语------------
 global lang_yd_free_key_unavailable_warning:="有道翻译已经不再提供免费的翻译 API，现在只能使用收费 API（新账号有试用额度），请参考 CapsLock+settingsDemo.ini 文件中 [TTranslate] 部分的说明设置密钥后使用翻译功能。"
 
 global lang_settingsFileContent:=""
-lang_settingsFileContent=
-(
+lang_settingsFileContent:=(
 ;------------ Encoding: UTF-16 ------------
-;请对照 CapsLock+settingsDemo.ini 来配置相关设置
+; 请对照 CapsLock+settingsDemo.ini 来配置相关设置
 [Global]
 
 loadScript=scriptDemo.js
@@ -54,8 +53,7 @@ loadScript=scriptDemo.js
 )
 global lang_settingsDemoFileContent_1:=""
 global lang_settingsDemoFileContent_2:=""
-lang_settingsDemoFileContent_1=
-(
+lang_settingsDemoFileContent_1 := (
 ;------------ Encoding: UTF-16 ------------
 ; # CapsLock+ 设置样本
 ; - ******请务必阅读以下说明：******
@@ -149,7 +147,7 @@ m=https://developer.mozilla.org/zh-CN/search?q={q}
 
 [QRun]
 ;一般状态
-ie1=C:\Program Files\Internet Explorer\iexplore.exe
+ie1="C:\Program Files\Internet Explorer\iexplore.exe"
 
 ;管理员权限打开
 ie2=*runas "C:\Program Files\Internet Explorer\iexplore.exe"
@@ -284,8 +282,7 @@ appPaidKey=xxx
 
 )
 
-lang_settingsDemoFileContent_2=
-(
+lang_settingsDemoFileContent_2:=(
 ; ## 按键功能设置
 
 ; - 可设置的按键组合有：
@@ -725,8 +722,7 @@ keyfunc_wheel_down
 
 )
 global lang_winsInfosRecorderIniInit:=""
-lang_winsInfosRecorderIniInit=
-(
+lang_winsInfosRecorderIniInit:=(
 ;------------ Encoding: UTF-16 ------------
 ;这里记录着窗口的数据，不要手动修改本文件内容，点下右上角的"X"就好。
 
@@ -779,8 +775,7 @@ id_0=
 
 ; keysFunction.ahk
 global lang_kf_getDebugText:=""
-lang_kf_getDebugText=
-(
+lang_kf_getDebugText:=(
 供 TabScript 调试用字符串
 点击"OK"将它复制到剪贴板
 )

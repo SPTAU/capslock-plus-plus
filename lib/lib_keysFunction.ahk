@@ -7,22 +7,22 @@ keyFunc_doNothing(){
 }
 
 keyFunc_test(){
-    MsgBox, , , testing, 1
+    MsgBox testing, , 1
     return
 }
 
 keyFunc_send(p){
-    sendinput, % p
+    Sendinput %p%
     return
 }
 
 keyFunc_run(p){
-    run, % p
+    run %p%
     return
 }
 
 keyFunc_toggleCapsLock(){
-    SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+    SetCapsLockState, %GetKeyState("CapsLock","T") ? "Off" : "On"%
     return
 }
 
@@ -53,13 +53,13 @@ keyFunc_mouseSpeedDecrease(){
 
 
 keyFunc_moveLeft(i:=1){
-    SendInput, {left %i%}
+    SendInput {left %i%}
     return
 }
 
 
 keyFunc_moveRight(i:=1){
-    SendInput, {right %i%}
+    SendInput {right %i%}
     Return
 }
 
@@ -68,13 +68,13 @@ keyFunc_moveUp(i:=1){
     global
     if(WinActive("ahk_id" . GuiHwnd))
     {
-        ControlFocus, , ahk_id %LV_show_Hwnd%
-        SendInput, {Up %i%}
-        Sleep, 5
-        ControlFocus, , ahk_id %editHwnd%
+        ControlFocus , ahk_id %LV_show_Hwnd%
+        SendInput {Up %i%}
+        Sleep 5
+        ControlFocus , ahk_id %editHwnd%
     }
     else
-        SendInput,{up %i%}
+        SendInput {up %i%}
     Return
 }
 
@@ -83,55 +83,55 @@ keyFunc_moveDown(i:=1){
     global
     if(WinActive("ahk_id" . GuiHwnd))
     {
-        ControlFocus, , ahk_id %LV_show_Hwnd%
-        SendInput, {Down %i%}
-        Sleep, 5
-        ControlFocus, , ahk_id %editHwnd%
+        ControlFocus , ahk_id %LV_show_Hwnd%
+        SendInput {Down %i%}
+        Sleep 5
+        ControlFocus , ahk_id %editHwnd%
     }
     else
-        SendInput,{down %i%}
+        SendInput {down %i%}
     Return
 }
 
 
 keyFunc_moveWordLeft(i:=1){
-    SendInput,^{Left %i%}
+    SendInput ^{Left %i%}
     Return
 }
 
 
 keyFunc_moveWordRight(i:=1){
-    SendInput,^{Right %i%}
+    SendInput ^{Right %i%}
     Return
 }
 
 
 keyFunc_backspace(){
-    SendInput,{backspace}
+    SendInput {backspace}
     Return
 }
 
 
 keyFunc_delete(){
-    SendInput,{delete}
+    SendInput {delete}
     Return
 }
 
 keyFunc_deleteAll(){
-    SendInput, ^{a}{delete}
+    SendInput ^{a}{delete}
     Return
 }
 
 keyFunc_deleteWord(){
-    SendInput, +^{left}
-    SendInput, {delete}
+    SendInput +^{left}
+    SendInput {delete}
     Return
 }
 
 
 keyFunc_forwardDeleteWord(){
-    SendInput, +^{right}
-    SendInput, {delete}
+    SendInput +^{right}
+    SendInput {delete}
     Return
 }
 
@@ -147,77 +147,77 @@ keyFunc_translate(){
     {
         ClipboardOld:=ClipboardAll
         Clipboard:=""
-        SendInput, ^{Left}^+{Right}^{insert}
-        ClipWait, 0.05
+        SendInput ^{Left}^+{Right}^{insert}
+        ClipWait 0.05
         selText:=Clipboard
         ydTranslate(selText)
         Clipboard:=ClipboardOld
     }
-    SetTimer, setTransGuiActive, -400
+    SetTimer setTransGuiActive, -400
     Return
 }
 
 
 keyFunc_end(){
-    SendInput,{End}
+    SendInput {End}
     Return
 }
 
 
 keyFunc_home(){
-    SendInput,{Home}
+    SendInput {Home}
     Return
 }
 
 
 keyFunc_moveToPageBeginning(){
-    SendInput, ^{Home}
+    SendInput ^{Home}
     Return
 }
 
 
 keyFunc_moveToPageEnd(){
-    SendInput, ^{End}
+    SendInput ^{End}
     Return
 }
 
 keyFunc_deleteLine(){
-    SendInput,{End}+{home}{bs}
+    SendInput {End}+{home}{bs}
     Return
 }
 
 keyFunc_deleteToLineBeginning(){
-    SendInput,+{Home}{bs}
+    SendInput +{Home}{bs}
     Return
 }
 
 keyFunc_deleteToLineEnd(){
-    SendInput,+{End}{bs}
+    SendInput +{End}{bs}
     Return
 }
 
 keyFunc_deleteToPageBeginning(){
-    SendInput,+^{Home}{bs}
+    SendInput +^{Home}{bs}
     Return
 }
 
 keyFunc_deleteToPageEnd(){
-    SendInput,+^{End}{bs}
+    SendInput +^{End}{bs}
     Return
 }
 
 keyFunc_enterWherever(){
-    SendInput,{End}{Enter}
+    SendInput {End}{Enter}
     Return
 }
 
 keyFunc_esc(){
-    SendInput, {Esc}
+    SendInput {Esc}
     Return
 }
 
 keyFunc_enter(){
-    SendInput, {Enter}
+    SendInput {Enter}
     Return
 }
 
@@ -233,18 +233,18 @@ keyFunc_doubleChar(char1,char2:=""){
     if(selText)
     {
         Clipboard:=char1 . selText . char2
-        SendInput, +{insert}
+        SendInput +{insert}
     }
     else
     {
         Clipboard:=char1 . char2
-        SendInput, +{insert}
+        SendInput +{insert}
         ; prevent the left input from interrupting the paste (may occur in vscode)
         ; fact: tests show that 50ms is not enough
-        Sleep, 75
-        SendInput, {left %charLen%}
+        Sleep 75
+        SendInput {left %charLen%}
     }
-    Sleep, 100
+    Sleep 100
     Clipboard:=ClipboardOld
     Return
 }
@@ -252,8 +252,8 @@ keyFunc_doubleChar(char1,char2:=""){
 keyFunc_sendChar(char){
     ClipboardOld:=ClipboardAll
     Clipboard:=char
-    SendInput, +{insert}
-    Sleep, 50
+    SendInput +{insert}
+    Sleep 50
     Clipboard:=ClipboardOld
     return
 }
@@ -268,12 +268,12 @@ keyFunc_pageUp(){
     global
     if(WinActive("ahk_id" . GuiHwnd))
     {
-        ControlFocus, , ahk_id %LV_show_Hwnd%
-        SendInput, {PgUp}
-        ControlFocus, , ahk_id %editHwnd%
+        ControlFocus , ahk_id %LV_show_Hwnd%
+        SendInput {PgUp}
+        ControlFocus , ahk_id %editHwnd%
     }
     else
-        SendInput, {PgUp}
+        SendInput {PgUp}
     return
 }
 
@@ -282,24 +282,24 @@ keyFunc_pageDown(){
     global
     if(WinActive("ahk_id" . GuiHwnd))
     {
-        ControlFocus, , ahk_id %LV_show_Hwnd%
-        SendInput, {PgDn}
-        ControlFocus, , ahk_id %editHwnd%
+        ControlFocus , ahk_id %LV_show_Hwnd%
+        SendInput {PgDn}
+        ControlFocus , ahk_id %editHwnd%
     }
     else
-        SendInput, {PgDn}
+        SendInput {PgDn}
     Return
 }
 
 ;页面向上移动一页，光标不动
 keyFunc_pageMoveUp(){
-    SendInput, ^{PgUp}
+    SendInput ^{PgUp}
     return
 }
 
 ;页面向下移动一页，光标不动
 keyFunc_pageMoveDown(){
-    SendInput, ^{PgDn}
+    SendInput ^{PgDn}
     return
 }
 
@@ -337,7 +337,7 @@ keyFunc_pasteSystem(){
         Clipboard:=sClipboardAll
         whichClipboardNow:=0
     }
-    SendInput, ^{v}
+    SendInput ^{v}
     return
 }
 
@@ -352,12 +352,12 @@ keyFunc_cut_1(){
 
     ClipboardOld:=ClipboardAll
     Clipboard:=""
-    SendInput, ^{x}
-    ClipWait, 0.1
+    SendInput ^{x}
+    ClipWait 0.1
     if (ErrorLevel)
     {
-        SendInput,{home}+{End}^{x}
-        ClipWait, 0.1
+        SendInput {home}+{End}^{x}
+        ClipWait 0.1
     }
     if (!ErrorLevel)
     {
@@ -383,12 +383,12 @@ keyFunc_copy_1(){
 
     ClipboardOld:=ClipboardAll
     Clipboard:=""
-    SendInput, ^{insert}
-    ClipWait, 0.1
+    SendInput ^{insert}
+    ClipWait 0.1
     if (ErrorLevel)
     {
-        SendInput,{home}+{End}^{insert}{End}
-        ClipWait, 0.1
+        SendInput {home}+{End}^{insert}{End}
+        ClipWait 0.1
     }
     if (!ErrorLevel)
     {
@@ -417,7 +417,7 @@ keyFunc_paste_1(){
         Clipboard:=cClipboardAll
         whichClipboardNow:=1
     }
-    SendInput, ^{v}
+    SendInput ^{v}
     Return
 }
 
@@ -426,12 +426,12 @@ keyFunc_undoRedo(){
     global
     if(ctrlZ)
     {
-        SendInput, ^{z}
+        SendInput ^{z}
         ctrlZ:=""
     }
     Else
     {
-        SendInput, ^{y}
+        SendInput ^{y}
         ctrlZ:=1
     }
     Return
@@ -448,12 +448,12 @@ keyFunc_cut_2(){
 
     ClipboardOld:=ClipboardAll
     Clipboard:=""
-    SendInput, ^{x}
-    ClipWait, 0.1
+    SendInput ^{x}
+    ClipWait 0.1
     if (ErrorLevel)
     {
-        SendInput,{home}+{End}^{x}
-        ClipWait, 0.1
+        SendInput {home}+{End}^{x}
+        ClipWait 0.1
     }
     if (!ErrorLevel)
     {
@@ -479,12 +479,12 @@ keyFunc_copy_2(){
 
     ClipboardOld:=ClipboardAll
     Clipboard:=""
-    SendInput, ^{insert}
-    ClipWait, 0.1
+    SendInput ^{insert}
+    ClipWait 0.1
     if (ErrorLevel)
     {
-        SendInput,{home}+{End}^{insert}{End}
-        ClipWait, 0.1
+        SendInput {home}+{End}^{insert}{End}
+        ClipWait 0.1
     }
     if (!ErrorLevel)
     {
@@ -513,14 +513,14 @@ keyFunc_paste_2(){
         Clipboard:=caClipboardAll
         whichClipboardNow:=2
     }
-    SendInput, ^{v}
+    SendInput ^{v}
     Return
 }
 
 
 keyFunc_qbar(){
     global
-    SetTimer, setCLqActive, 50
+    SetTimer setCLqActive, 50
     ;先关闭所有Caps热键，然后再打开
     ;防止其他功能在 qbar 出来这段时间因为输入文字而被触发
     CapsLock:=CapsLock2:=""
@@ -529,120 +529,120 @@ keyFunc_qbar(){
     return
 
     setCLqActive:
-    IfWinExist, ahk_id %GuiHwnd%
+    IfWinExist ahk_id %GuiHwnd%
     {
-        SetTimer, ,Off
-        WinActivate, ahk_id %GuiHwnd%
+        SetTimer , Off
+        WinActivate ahk_id %GuiHwnd%
     }
     return
 }
 
 
 keyFunc_tabPrve(){
-    SendInput, ^+{tab}
+    SendInput ^+{tab}
     return
 }
 
 
 keyFunc_tabNext(){
-    SendInput, ^{tab}
+    SendInput ^{tab}
     return
 }
 
 
 keyFunc_jumpPageTop(){
-    SendInput, ^{Home}
+    SendInput ^{Home}
     return
 }
 
 
 keyFunc_jumpPageBottom(){
-    SendInput, ^{End}
+    SendInput ^{End}
     return
 }
 
 
 keyFunc_selectUp(i:=1){
-    SendInput, +{Up %i%}
+    SendInput +{Up %i%}
     return
 }
 
 
 keyFunc_selectDown(i:=1){
-    SendInput, +{Down %i%}
+    SendInput +{Down %i%}
     return
 }
 
 
 keyFunc_selectLeft(i:=1){
-    SendInput, +{Left %i%}
+    SendInput +{Left %i%}
     return
 }
 
 
 keyFunc_selectRight(i:=1){
-    SendInput, +{Right %i%}
+    SendInput +{Right %i%}
     return
 }
 
 
 keyFunc_selectHome(){
-    SendInput, +{Home}
+    SendInput +{Home}
     return
 }
 
 
 keyFunc_selectEnd(){
-    SendInput, +{End}
+    SendInput +{End}
     return
 }
 
 keyFunc_selectToPageBeginning(){
-    SendInput, +^{Home}
+    SendInput +^{Home}
     return
 }
 
 
 keyFunc_selectToPageEnd(){
-    SendInput, +^{End}
+    SendInput +^{End}
     return
 }
 
 
 keyFunc_selectCurrentWord(){
-    SendInput, ^{Left}
-    SendInput, +^{Right}
+    SendInput ^{Left}
+    SendInput +^{Right}
     return
 }
 
 
 keyFunc_selectCurrentLine(){
-    SendInput, {Home}
-    SendInput, +{End}
+    SendInput {Home}
+    SendInput +{End}
     return
 }
 
 
 keyFunc_selectWordLeft(i:=1){
-    SendInput, +^{Left %i%}
+    SendInput +^{Left %i%}
     return
 }
 
 
 keyFunc_selectWordRight(i:=1){
-    SendInput, +^{Right %i%}
+    SendInput +^{Right %i%}
     return
 }
 
 ;页面移动一行，光标不动
 keyFunc_pageMoveLineUp(i:=1){
-    SendInput, ^{Up %i%}
+    SendInput ^{Up %i%}
     return
 }
 
 
 keyFunc_pageMoveLineDown(i:=1){
-    SendInput, ^{Down %i%}
+    SendInput ^{Down %i%}
     return
 }
 
@@ -652,12 +652,12 @@ keyFunc_getJSEvalString(){
     global
     ClipboardOld:=ClipboardAll
     Clipboard:=""
-    SendInput, ^{insert} ;
-    ClipWait, 0.1
+    SendInput ^{insert} ;
+    ClipWait 0.1
     if(!ErrorLevel)
     {
         result:=escapeString(Clipboard)
-        inputbox, result,,%lang_kf_getDebugText%,,,,,,,, % result
+        result := inputbox(, %lang_kf_getDebugText% , , , , , , , , %result%)
         if(!ErrorLevel)
         {
             Clipboard:=result
@@ -665,7 +665,7 @@ keyFunc_getJSEvalString(){
             return
         }
     }
-    Sleep, 200
+    Sleep 200
     Clipboard:=ClipboardOld
     return
 }
@@ -680,59 +680,59 @@ keyFunc_tabScript(){
 keyFunc_openCpasDocs(){
     if(isLangChinese())
     {
-        Run, https://capslox.com/capslock-plus
+        Run https://capslox.com/capslock-plus
     } else {
-        Run, https://capslox.com/capslock-plus/en.html
+        Run https://capslox.com/capslock-plus/en.html
     }
     return
 }
 
 
 keyFunc_mediaPrev(){
-    SendInput, {Media_Prev}
+    SendInput {Media_Prev}
     return
 }
 
 
 keyFunc_mediaNext(){
-    SendInput, {Media_Next}
+    SendInput {Media_Next}
     return
 }
 
 
 keyFunc_mediaPlayPause(){
-    SendInput, {Media_Play_Pause}
+    SendInput {Media_Play_Pause}
     return
 }
 
 
 keyFunc_volumeUp(){
-    SendInput, {Volume_Up}
+    SendInput {Volume_Up}
     return
 }
 
 
 keyFunc_volumeDown(){
-    SendInput, {Volume_Down}
+    SendInput {Volume_Down}
     return
 }
 
 
 keyFunc_volumeMute(){
-    SendInput, {Volume_Mute}
+    SendInput {Volume_Mute}
     return
 }
 
 
 keyFunc_reload(){
-    MsgBox, , , reload, 0.5
+    MsgBox reload, , 0.5
     Reload
     return
 }
 
 keyFunc_send_dot(){
     if(!keyFunc_qbar_lowerFolderPath())
-        SendInput, {U+002e}
+        SendInput {U+002e}
     return
 }
 
@@ -748,7 +748,7 @@ keyFunc_qbar_upperFolderPath(){
 
         return true
     }
-    ControlGetText, editText, , ahk_id %editHwnd%
+    editText := ControlGetText(, ahk_id %editHwnd%)
     ;  if(historyIndex>1)
     ;      historyIndex--
 
@@ -763,8 +763,8 @@ keyFunc_qbar_upperFolderPath(){
     editText := RegExReplace(editText,"i)([^\\]*\\|[^\\]*)$")
     ;  ifInsertHistory:=0  ;禁止记录地址
     ifClearFuture:=0
-    ControlSetText, , %editText%, ahk_id %editHwnd%
-    sendinput, {end}
+    ControlSetTex %editText%, , ahk_id %editHwnd%
+    sendinput {end}
     return true
 }
 
@@ -780,8 +780,8 @@ keyFunc_qbar_lowerFolderPath(){
     if(editText)
     {
         ifClearFuture:=0
-        ControlSetText, , %editText%, ahk_id %editHwnd%
-        sendinput, {end}
+        ControlSetText %editText%, , ahk_id %editHwnd%
+        sendinput {end}
     }
     return true
 }
@@ -813,7 +813,7 @@ keyFunc_winPin(){
     ;
     ;      return
     ;  }
-    WinSet, AlwaysOnTop
+    WinSet AlwaysOnTop
     ;  WinSet, Transparent, 210
     return
 }
@@ -821,45 +821,45 @@ keyFunc_winPin(){
 
 keyFunc_goCjkPage(){
     global
-    run, http://cjkis.me
+    run http://cjkis.me
     return
 }
 
 ; 鼠标左键点击
 keyfunc_click_left(){
-    Click, Left
+    Click Left
 }
 
 ; 鼠标右键点击
 keyfunc_click_right(){
-    Click, Right
+    Click Right
 }
 
 ; 移动鼠标
 keyfunc_mouse_up(){
-    MouseMove, 0, -dynamic_speed(), 0, R
+    MouseMove 0, -dynamic_speed(), 0, R
 }
 
 keyfunc_mouse_down(){
-    MouseMove, 0, dynamic_speed(), 0, R
+    MouseMove 0, dynamic_speed(), 0, R
 }
 
 keyfunc_mouse_left(){
-    MouseMove, -dynamic_speed(), 0, 0, R
+    MouseMove -dynamic_speed(), 0, 0, R
 }
 
 keyfunc_mouse_right(){
-    MouseMove, dynamic_speed(), 0, 0, R
+    MouseMove dynamic_speed(), 0, 0, R
 }
 
 ; 上滑滚轮
 keyfunc_wheel_up(){
-    Send, {WheelUp 3}
+    Send {WheelUp 3}
 }
 
 ; 下滑滚轮
 keyfunc_wheel_down(){
-    Send, {Wheeldown 3}
+    Send {Wheeldown 3}
 }
 
 
@@ -876,7 +876,7 @@ dynamic_speed(init:=10, a:=0.2, max:=80)
     if (A_ThisHotkey = A_PriorHotkey) and (A_TimeSincePriorHotkey < 300)
         N += a
     else
-        N = 0
+        N := 0
     return Min(Floor(init+Exp(N)), max)
 }
 

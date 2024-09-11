@@ -1,4 +1,5 @@
 #SingleInstance force
+#Requires AutoHotkey >=2.0- <2.1
 
 ; If the script is not elevated, relaunch as administrator and kill current instance:
 full_command_line := DllCall("GetCommandLine", "str")
@@ -14,24 +15,13 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
     ExitApp
 }
 
-IfExist, capslock+icon.ico
-{
-;freezing icon
-menu, TRAY, Icon, capslock+icon.ico, , 1
+if FileExist(capslock+icon.ico){
+    TraySetIcon(capslock+icon.ico, 1, true)
 }
-Menu, Tray, Icon,,, 1
 
-SetStoreCapslockMode, Off
+SetStoreCapslockMode Off
 
-global CLversion:="Version: 3.3.0.0 | 2023-10-22`n`nCopyright Junkai Chen" 
-
-global cClipboardAll ;capslock+ clipboard
-global caClipboardAll ;capslock+alt clipboard
-global sClipboardAll ;system clipboard
-global whichClipboardNow  ;0 system clipboard; 1 capslock+ clipboard; 2 capslock+alt clipboard
-;  global clipSaveArr=[]
-allowRunOnClipboardChange:=true
-
+global CLversion:="Version: 3.3.0.0 | 2023-10-22`n`nCopyright Junkai Chen"
 
 #Include lib
 #Include lib_init.ahk ;The beginning of all things
@@ -40,8 +30,6 @@ allowRunOnClipboardChange:=true
 #include ..\language\lang_func.ahk
 #include ..\language\Simplified_Chinese.ahk
 #include ..\language\English.ahk
-;  #include ..\language\Traditional_Chinese.ahk
-; /language
 
 #include lib_keysFunction.ahk
 #include lib_keysSet.ahk
@@ -49,25 +37,24 @@ allowRunOnClipboardChange:=true
 ;  #include lib_scriptDemo.ahk
 ;  #include lib_fileMethods.ahk
 
-#include lib_settings.ahk ;get the settings from capslock+settings.ini 
-#Include lib_clQ.ahk ;capslock+Q
-#Include lib_ydTrans.ahk  ;capslock+T translate
-#Include lib_clTab.ahk 
-#Include lib_functions.ahk ;public functions
-#Include lib_bindWins.ahk ;capslock+` 1~8, windows bind
-#Include lib_winJump.ahk
-#Include lib_winTransparent.ahk
-#Include lib_mouseSpeed.ahk
-#Include lib_mathBoard.ahk
-#include lib_loadAnimation.ahk
+#include lib_settings.ahk ;get the settings from capslock+settings.ini
+;  #Include lib_clQ.ahk ;capslock+Q
+;  #Include lib_ydTrans.ahk  ;capslock+T translate
+;  #Include lib_clTab.ahk
+;  #Include lib_functions.ahk ;public functions
+;  #Include lib_bindWins.ahk ;capslock+` 1~8, windows bind
+;  #Include lib_winJump.ahk
+;  #Include lib_winTransparent.ahk
+;  #Include lib_mouseSpeed.ahk
+;  #Include lib_mathBoard.ahk
+;  #include lib_loadAnimation.ahk
 
 
-;change dir
+;  change dir
 #include ..\userAHK
 #include *i main.ahk
 
-#MaxHotkeysPerInterval 500
-#NoEnv
+A_HotkeysPerInterval := 500
 ;  #WinActivateForce
 Process Priority,,High
 
@@ -77,17 +64,19 @@ start:
 ;-----------------START-----------------
 global ctrlZ, CapsLock2, CapsLock
 
-Capslock::
+Capslock:: {
 ;ctrlZ:     Capslock+Z undo / redo flag
 ;Capslock:  Capslock 键状态标记，按下是1，松开是0
 ;Capslock2: 是否使用过 Capslock+ 功能标记，使用过会清除这个变量
-ctrlZ:=CapsLock2:=CapsLock:=1
+ctrlZ:=1
+CapsLock2:=1
+CapsLock:=1
 
-SetTimer, setCapsLock2, -300 ; 300ms 犹豫操作时间
+SetTimer setCapsLock2, -300 ; 300ms 犹豫操作时间
 
-settimer, changeMouseSpeed, 50 ;暂时修改鼠标速度
+settimer changeMouseSpeed, 50 ;暂时修改鼠标速度
 
-KeyWait, Capslock
+KeyWait Capslock
 CapsLock:="" ;Capslock最优先置空，来关闭 Capslock+ 功能的触发
 if CapsLock2
 {
@@ -98,7 +87,7 @@ if CapsLock2
     }
     else
     {
-        SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+        SetCapsLockState %GetKeyState("CapsLock","T")% ? "Off" : "On"
     }
     ; sendinput, {esc}
 }
@@ -110,12 +99,13 @@ if(winTapedX!=-1)
     winsSort(winTapedX)
 }
 return
+}
 
 <!Capslock::
-#Capslock::
+#Capslock:: {
 ; 按下lalt+Capslock或win+Capslock时，同样启动 Capslock+ 功能
 CapsLock:=1
-KeyWait, Capslock
+KeyWait Capslock
 CapsLock:=""
 return
 
@@ -138,31 +128,36 @@ if (allowRunOnClipboardChange && !CapsLock && CLsets.global.allowClipboard != "0
 }
 allowRunOnClipboardChange:=true
 return
-
+}
 
 ;----------------------------keys-set-start-----------------------------
-#if CLsets.global.allowClipboard != "0"
-$^v::
-try
-    keyFunc_pasteSystem()
-return
-#if
+#HotIf CLsets.global.allowClipboard != "0"
+$^v::{
+    try
+        keyFunc_pasteSystem()
+    return
+}
+#HotIf
 
-#If CapsLock ;when capslock key press and hold
+#HotIf CapsLock ;when capslock key press and hold
 
-LAlt::return
+LAlt:: {
+    return
+}
 
-<!WheelUp::
-try
-    runFunc(keyset.caps_lalt_wheelUp)
-Capslock2:=""
-return
+<!WheelUp:: {
+    try
+        runFunc(keyset.caps_lalt_wheelUp)
+    Capslock2:=""
+    return
+}
 
-<!WheelDown::
-try
-    runFunc(keyset.caps_lalt_wheelDown)
-Capslock2:=""
-return
+<!WheelDown:: {
+    try
+        runFunc(keyset.caps_lalt_wheelDown)
+    Capslock2:=""
+    return
+}
 
 ;--::-------------------------
 ;  KEY_TO_NAME := {"a":"a","b":"b","c":"c","d":"d","e":"e","f":"f","g":"g","h":"h","i":"i"
@@ -233,80 +228,87 @@ tab::
 enter::
 esc::
 backspace::
-ralt::
-try
-    runFunc(keyset["caps_" . A_ThisHotkey])
-Capslock2:=""
-Return
+ralt:: {
+    try
+        runFunc(keyset["caps_" . A_ThisHotkey])
+    Capslock2:=""
+    Return
+}
 
-`::
-try
-    runFunc(keyset.caps_backQuote)
-Capslock2:=""
-return
+`:: {
+    try
+        runFunc(keyset.caps_backQuote)
+    Capslock2:=""
+    return
+}
 
-
--::
-try
-    runFunc(keyset.caps_minus)
-Capslock2:=""
-return
-
-=::
-try
-    runFunc(keyset.caps_equal)
-Capslock2:=""
-Return
+-:: {
+    try
+        runFunc(keyset.caps_minus)
+    Capslock2:=""
+    return
+}
 
 
-[::
-try
-    runFunc(keyset.caps_leftSquareBracket)
-Capslock2:=""
-Return
+=:: {
+    try
+        runFunc(keyset.caps_equal)
+    Capslock2:=""
+    Return
+}
 
-]::
-try
-    runFunc(keyset.caps_rightSquareBracket)
-Capslock2:=""
-Return
+[:: {
+    try
+        runFunc(keyset.caps_leftSquareBracket)
+    Capslock2:=""
+    Return
+}
 
-\::
-try
-    runFunc(keyset.caps_backslash)
-Capslock2:=""
-return
+]:: {
+    try
+        runFunc(keyset.caps_rightSquareBracket)
+    Capslock2:=""
+    Return
+}
 
-`;::
-try
-    runFunc(keyset.caps_semicolon)
-Capslock2:=""
-Return
+\:: {
+    try
+        runFunc(keyset.caps_backslash)
+    Capslock2:=""
+    return
+}
+
+`;:: {
+    try
+        runFunc(keyset.caps_semicolon)
+    Capslock2:=""
+    Return
+}
 
 '::
-try
+{try
     runFunc(keyset.caps_quote)
 Capslock2:=""
-return
+return}
 
 
 ,::
-try
+{try
     runFunc(keyset.caps_comma)
 Capslock2:=""
-Return
+return}
 
 .::
-try
+{try
     runFunc(keyset.caps_dot)
 Capslock2:=""
-return
+return}
 
 /::
-try
+{try
     runFunc(keyset.caps_slash)
 Capslock2:=""
-Return
+Return}
 
 ;  RAlt::
 ;  try
@@ -319,136 +321,136 @@ Return
 ;---------------------caps+lalt----------------
 
 <!a::
-try
+{try
     runFunc(keyset.caps_lalt_a)
 Capslock2:=""
-return
+return}
 
 <!b::
-try
+{try
     runFunc(keyset.caps_lalt_b)
 Capslock2:=""
-Return
+return}
 
 <!c::
-try
+{try
     runFunc(keyset.caps_lalt_c)
 Capslock2:=""
-return
+return}
 
 <!d::
-try
+{try
     runFunc(keyset.caps_lalt_d)
 Capslock2:=""
-Return
+return}
 
 <!e::
-try
+{try
     runFunc(keyset.caps_lalt_e)
 Capslock2:=""
-Return
+Return}
 
 <!f::
-try
+{try
     runFunc(keyset.caps_lalt_f)
 Capslock2:=""
-Return
+Return}
 
 <!g::
-try
+{try
     runFunc(keyset.caps_lalt_g)
 Capslock2:=""
-Return
+Return}
 
 <!h::
-try
+{try
     runFunc(keyset.caps_lalt_h)
 Capslock2:=""
-return
+return}
 
 <!i::
-try
+{try
     runFunc(keyset.caps_lalt_i)
 Capslock2:=""
-return
+return}
 
 <!j::
-try
+{try
     runFunc(keyset.caps_lalt_j)
 Capslock2:=""
-return
+return}
 
 <!k::
-try
+{try
     runFunc(keyset.caps_lalt_k)
 Capslock2:=""
-return
+return}
 
 <!l::
-try
+{try
     runFunc(keyset.caps_lalt_l)
 Capslock2:=""
-return
+return}
 
 <!m::
-try
+{try
     runFunc(keyset.caps_lalt_m)
 Capslock2:=""
-return
+return}
 
 <!n::
-try
+{try
     runFunc(keyset.caps_lalt_n)
 Capslock2:=""
-Return
+Return}
 
 <!o::
-try
+{try
     runFunc(keyset.caps_lalt_o)
 Capslock2:=""
-return
+return}
 
 <!p::
-try
+{try
     runFunc(keyset.caps_lalt_p)
 Capslock2:=""
-Return
+Return}
 
 <!q::
-try
+{try
     runFunc(keyset.caps_lalt_q)
 Capslock2:=""
-return
+return}
 
 <!r::
-try
+{try
     runFunc(keyset.caps_lalt_r)
 Capslock2:=""
-Return
+Return}
 
 <!s::
-try
+{try
     runFunc(keyset.caps_lalt_s)
 Capslock2:=""
-Return
+Return}
 
 <!t::
-try
+{try
     runFunc(keyset.caps_lalt_t)
 Capslock2:=""
-Return
+Return}
 
 <!u::
-try
+{try
     runFunc(keyset.caps_lalt_u)
 Capslock2:=""
-return
+return}
 
 <!v::
-try
+{try
     runFunc(keyset.caps_lalt_v)
 Capslock2:=""
-Return
+Return}
 
 <!w::
 try
@@ -457,243 +459,244 @@ Capslock2:=""
 Return
 
 <!x::
-try
+{try
     runFunc(keyset.caps_lalt_x)
 Capslock2:=""
-Return
+Return}
 
 <!y::
-try
+{try
     runFunc(keyset.caps_lalt_y)
 Capslock2:=""
-return
+return}
 
 <!z::
-try
+{try
     runFunc(keyset.caps_lalt_z)
 Capslock2:=""
-Return
+Return}
 
 <!`::
+{try
     runFunc(keyset.caps_lalt_backquote)
 Capslock2:=""
-return
+return}
 
 <!1::
-try
+{try
     runFunc(keyset.caps_lalt_1)
 Capslock2:=""
-return
+return}
 
 <!2::
-try
+{try
     runFunc(keyset.caps_lalt_2)
 Capslock2:=""
-return
+return}
 
 <!3::
-try
+{try
     runFunc(keyset.caps_lalt_3)
 Capslock2:=""
-return
+return}
 
 <!4::
-try
+{try
     runFunc(keyset.caps_lalt_4)
 Capslock2:=""
-return
+return}
 
 <!5::
-try
+{try
     runFunc(keyset.caps_lalt_5)
 Capslock2:=""
-return
+return}
 
 <!6::
-try
+{try
     runFunc(keyset.caps_lalt_6)
 Capslock2:=""
-return
+return}
 
 <!7::
-try
+{try
     runFunc(keyset.caps_lalt_7)
 Capslock2:=""
-return
+return}
 
 <!8::
-try
+{try
     runFunc(keyset.caps_lalt_8)
 Capslock2:=""
-return
+return}
 
 <!9::
-try
+{try
     runFunc(keyset.caps_lalt_9)
 Capslock2:=""
-Return
+Return}
 
 <!0::
-try
+{try
     runFunc(keyset.caps_lalt_0)
 Capslock2:=""
-Return
+Return}
 
 <!-::
-try
+{try
     runFunc(keyset.caps_lalt_minus)
 Capslock2:=""
-return
+return}
 
 <!=::
-try
+{try
     runFunc(keyset.caps_lalt_equal)
 Capslock2:=""
-Return
+Return}
 
 <!BackSpace::
-try
+{try
     runFunc(keyset.caps_lalt_backspace)
 Capslock2:=""
-Return
+Return}
 
 <!Tab::
-try
+{try
     runFunc(keyset.caps_lalt_tab)
 Capslock2:=""
-Return
+Return}
 
 <![::
-try
+{try
     runFunc(keyset.caps_lalt_leftSquareBracket)
 Capslock2:=""
-Return
+Return}
 
 <!]::
-try
+{try
     runFunc(keyset.caps_lalt_rightSquareBracket)
 Capslock2:=""
-Return
+Return}
 
 <!\::
-try
+{try
     runFunc(keyset.caps_lalt_Backslash)
 Capslock2:=""
-return
+return}
 
 <!`;::
-try
+{try
     runFunc(keyset.caps_lalt_semicolon)
 Capslock2:=""
-Return
+Return}
 
 <!'::
-try
+{try
     runFunc(keyset.caps_lalt_quote)
 Capslock2:=""
-return
+return}
 
 <!Enter::
-try
+{try
     runFunc(keyset.caps_lalt_enter)
 Capslock2:=""
-Return
+Return}
 
 <!,::
-try
+{try
     runFunc(keyset.caps_lalt_comma)
 Capslock2:=""
-Return
+Return}
 
 <!.::
-try
+{try
     runFunc(keyset.caps_lalt_dot)
 Capslock2:=""
-return
+return}
 
 <!/::
-try
+{try
     runFunc(keyset.caps_lalt_slash)
 Capslock2:=""
-Return
+Return}
 
 <!Space::
-try
+{try
     runFunc(keyset.caps_lalt_space)
 Capslock2:=""
-Return
+Return}
 
 <!RAlt::
-try
+{try
     runFunc(keyset.caps_lalt_ralt)
 Capslock2:=""
-return
+return}
 
 <!F1::
-try
+{try
     runFunc(keyset.caps_lalt_f1)
 Capslock2:=""
-return
+return}
 
 <!F2::
-try
+{try
     runFunc(keyset.caps_lalt_f2)
 Capslock2:=""
-return
+return}
 
 <!F3::
-try
+{try
     runFunc(keyset.caps_lalt_f3)
 Capslock2:=""
-return
+return}
 
 <!F4::
-try
+{try
     runFunc(keyset.caps_lalt_f4)
 Capslock2:=""
-return
+return}
 
 <!F5::
-try
+{try
     runFunc(keyset.caps_lalt_f5)
 Capslock2:=""
-return
+return}
 
 <!F6::
-try
+{try
     runFunc(keyset.caps_lalt_f6)
 Capslock2:=""
-return
+return}
 
 <!F7::
-try
+{try
     runFunc(keyset.caps_lalt_f7)
 Capslock2:=""
-return
+return}
 
 <!F8::
-try
+{try
     runFunc(keyset.caps_lalt_f8)
 Capslock2:=""
-return
+return}
 
 <!F9::
-try
+{try
     runFunc(keyset.caps_lalt_f9)
 Capslock2:=""
-return
+return}
 
 <!F10::
-try
+{try
     runFunc(keyset.caps_lalt_f10)
 Capslock2:=""
-return
+return}
 
 <!F11::
-try
+{try
     runFunc(keyset.caps_lalt_f11)
 Capslock2:=""
-return
+return}
 
 <!F12::
 try
@@ -760,6 +763,7 @@ try
     runFunc(keyset.caps_win_0)
 Capslock2:=""
 return
+
 ;  #s::
 ;      keyFunc_activateSideWin("l")
 ;  Capslock2:=""

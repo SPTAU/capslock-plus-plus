@@ -29,8 +29,7 @@ global lang_yd_phrase:= "----------------------------------- Phrase ------------
 global lang_yd_free_key_unavailable_warning:="Youdao Translate no longer provides free translation API, now you can only use the paid API (new accounts have a trial amount), please refer to the instructions in the [TTranslate] section of the CapsLock+settingsDemo.ini file to set up the key and use the translation function."
 
 global lang_settingsFileContent:=""
-lang_settingsFileContent=
-(
+lang_settingsFileContent:=(
 ;------------ Encoding: UTF-16 ------------
 ; Please refer to CapsLock+settingsDemo.ini to configure settings
 [Global]
@@ -54,8 +53,7 @@ loadScript=scriptDemo.js
 )
 global lang_settingsDemoFileContent_1:=""
 global lang_settingsDemoFileContent_2:=""
-lang_settingsDemoFileContent_1=
-(
+lang_settingsDemoFileContent_1:=(
 ;------------ Encoding: UTF-16 ------------
 ; # CapsLock+ settings demo
 ; ****** PLEASE READ THE FOLLOWING INSTRUCTIONS: ******
@@ -163,7 +161,7 @@ m=https://developer.mozilla.org/zh-CN/search?q={q}
 
 [QRun]
 ; Normal
-ie1=C:\Program Files\Internet Explorer\iexplore.exe
+ie1="C:\Program Files\Internet Explorer\iexplore.exe"
 
 ; Run as administrator
 ie2=*runas "C:\Program Files\Internet Explorer\iexplore.exe"
@@ -310,8 +308,7 @@ appPaidKey=xxx
 
 )
 
-lang_settingsDemoFileContent_2=
-(
+lang_settingsDemoFileContent_2:=(
 ; ## Hotkey settings
 
 ; - Available hotkeys:
@@ -754,8 +751,7 @@ keyfunc_wheel_down
 
 )
 global lang_winsInfosRecorderIniInit:=""
-lang_winsInfosRecorderIniInit=
-(
+lang_winsInfosRecorderIniInit:=(
 ;------------ Encoding: UTF-16 ------------
 ; The data for Window Binding, DO NOT modify the content of this file!
 ; Just click the "X" in the upper right.
@@ -809,8 +805,7 @@ id_0=
 
 ; keysFunction.ahk
 global lang_kf_getDebugText:=""
-lang_kf_getDebugText=
-(
+lang_kf_getDebugText:=(
 The string for debug TabScript
 Click "OK" to copy it to the clipboard.
 )
