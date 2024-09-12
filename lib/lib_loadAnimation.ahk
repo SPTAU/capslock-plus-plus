@@ -1,83 +1,63 @@
-﻿showLoading:
-;~ global 
-;~ LoadingChar:=["—","/","|","\"]
-;~ LoadingChar:=["1","2","3","4","5","6","7","8"]
-LoadingChar:=[   "_('<------"
-                ," _('=-----"
-                ," _('<-----"
-                ,"  _('=----"
-                ,"  _('<----"
-                ,"   _('=---"
-                ,"   _('<---"
-                ,"    _('=--"
-                ,"    _('<--"
-                ,"     _('=-"
-                ,"     _('<-"
-                ,"      _(*="
-                ,"------_(*="
-                ,"------_(^<"
-                ,"------_(^<"
-                ,"------ |  "
-                ,"------>')_"
-                ,"-----=')_ "
-                ,"----->')_ "
-                ,"----=')_  "
-                ,"---->')_  "
-                ,"---=')_   "
-                ,"--->')_   "
-                ,"--=')_    "
-                ,"-->')_    "
-                ,"-=')_     "
-                ,"->')_     "
-                ,"=*)_      "
-                ,"=*)_------"
-                ,">^)_------"
-                ,">^)_------"
-                ,"  | ------"]
-;  LoadingChar:=[   "=---------"
-;                  ,"-=--------"
-;                  ,"--=-------"
-;                  ,"---=------"
-;                  ,"----=-----"
-;                  ,"-----=----"
-;                  ,"------=---"
-;                  ,"-------=--"
-;                  ,"--------=-"
-;                  ,"---------="
-;                  ,"--------=-"
-;                  ,"-------=--"
-;                  ,"------=---"
-;                  ,"-----=----"
-;                  ,"----=-----"
-;                  ,"---=------"
-;                  ,"--=-------"
-;                  ,"-=--------"]
-Gui, LoadingGui:new, HwndLoadingGuiHwnd -Caption +AlwaysOnTop +Owner
-Gui, Font, S12 C0x555555, Lucida Console ;后备字体
-Gui, Font, S12 C0x555555, Fixedsys      ;后备字体
-Gui, Font, S12 C0x555555, Courier New   ;后备字体
-Gui, Font, S12 C0x555555, Source Code Pro   ;后备字体
-Gui, Font, S12 C0x555555, Consolas
-Gui, Add, Text, HwndLoadingTextHwnd H20 W100 Center,% LoadingChar[1]
-Gui, Color, ffffff, ffffff
-Gui, LoadingGui:Show, Center NA
-;~ WinSet, TransColor, ffffff, ahk_id %LoadingGuiHwnd%
-WinSet, Transparent, 230, ahk_id %LoadingGuiHwnd%
-charIndex:=1
-loadingCharMaxIndex:=LoadingChar._MaxIndex()
-SetTimer, changeLoadingChar, 250, 777   ;优先级777
-return
+﻿showLoading(){
+    global LoadingChar := [
+        "_('<------",
+        " _('=-----",
+        " _('<-----",
+        "  _('=----",
+        "  _('<----",
+        "   _('=---",
+        "   _('<---",
+        "    _('=--",
+        "    _('<--",
+        "     _('=-",
+        "     _('<-",
+        "      _(*=",
+        "------_(*=",
+        "------_(^<",
+        "------_(^<",
+        "------ |  ",
+        "------>')_",
+        "-----=')_ ",
+        "----->')_ ",
+        "----=')_  ",
+        "---->')_  ",
+        "---=')_   ",
+        "--->')_   ",
+        "--=')_    ",
+        "-->')_    ",
+        "-=')_     ",
+        "->')_     ",
+        "=*)_      ",
+        "=*)_------",
+        ">^)_------",
+        ">^)_------",
+        "  | ------"
+    ]
+    global LoadingGui := Gui("-Caption +AlwaysOnTop +Owner")
+    LoadingGui.Font("s12 c0x555555", "Lucida Console")
+    LoadingGui.Font("s12 c0x555555", "Fixedsys")
+    LoadingGui.Font("s12 c0x555555", "Courier New")
+    LoadingGui.Font("s12 c0x555555", "Source Code Pro")
+    LoadingGui.Font("s12 c0x555555", "Consolas")
+    LoadingText := LoadingGui.Add("Text", "H20 W100 Center", LoadingChar[1])
+    global LoadingTextHwnd := ControlGetHwnd("Text")
+    LoadingGui.Color("ffffff", "ffffff")
+    LoadingGui.Show("Center NA")
+    WinSetTransparent 230, "ahk_id " LoadingGui.Hwnd
+    global charIndex := 1
+    global loadingCharMaxIndex := LoadingChar.MaxIndex()
+    SetTimer changeLoadingChar, 250, 777
+    return LoadingGui
+}
 
+hideLoading(){
+    SetTimer(changeLoadingChar, 0)
+    LoadingGui.Destroy()
+    return
+}
 
-hideLoading:
-SetTimer, changeLoadingChar, Off
-Gui, LoadingGui:Destroy
-return
-
-
-changeLoadingChar:
-charIndex:=Mod(charIndex, loadingCharMaxIndex)+1
-ControlSetText, , % LoadingChar[charIndex], ahk_id %LoadingTextHwnd%
-return
-
-
+changeLoadingChar(){
+    charIndex := Mod(charIndex, loadingCharMaxIndex)+1
+    ControlSetText %LoadingChar[charIndex]%, LoadingTextHwnd
+    return
+}

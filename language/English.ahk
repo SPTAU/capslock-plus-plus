@@ -1,4 +1,4 @@
-﻿language_English:
+﻿language_English(){
 ; lib\lib_bindWins.ahk
 global lang_bw_noWIRini:="CapsLock+winsInfosRecorder.ini does not exist"
 
@@ -29,10 +29,11 @@ global lang_yd_phrase:= "----------------------------------- Phrase ------------
 global lang_yd_free_key_unavailable_warning:="Youdao Translate no longer provides free translation API, now you can only use the paid API (new accounts have a trial amount), please refer to the instructions in the [TTranslate] section of the CapsLock+settingsDemo.ini file to set up the key and use the translation function."
 
 global lang_settingsFileContent:=""
-lang_settingsFileContent:=(
+lang_settingsFileContent := "
+(
 ;------------ Encoding: UTF-16 ------------
 ; Please refer to CapsLock+settingsDemo.ini to configure settings
-[Global]
+[System]
 
 loadScript=scriptDemo.js
 
@@ -50,17 +51,18 @@ loadScript=scriptDemo.js
 
 [Keys]
 
-)
+)"
 global lang_settingsDemoFileContent_1:=""
 global lang_settingsDemoFileContent_2:=""
-lang_settingsDemoFileContent_1:=(
+lang_settingsDemoFileContent_1 := "
+(
 ;------------ Encoding: UTF-16 ------------
 ; # CapsLock+ settings demo
 ; ****** PLEASE READ THE FOLLOWING INSTRUCTIONS: ******
 
 ; - The settings here are read-only, just for demonstration, don't modify the settings here, please write settings in
 ;   CapsLock+settings.ini. For example, if you need to turn on the auto start, please insert a line: autostart=1 under
-;   [Global] in CapsLock+settings.ini, and save.
+;   [System] in CapsLock+settings.ini, and save.
 
 ; - "[xxx]" is the section name, which cannot be modified.
 ; - The format of settings under each section is: key=value, one setting per line.
@@ -72,8 +74,8 @@ lang_settingsDemoFileContent_1:=(
 
 
 ;----------------------------------------------------------------
-; ## Global Settings
-[Global]
+; ## System Settings
+[System]
 ; Whether to start automatically after booting, 1 is yes, 0 is no (default).
 autostart=0
 
@@ -127,12 +129,12 @@ loadingAnimation=1
 
 [QSearch]
 
-default=https://www.google.com/search?q={q}
-bd=https://www.baidu.com/s?wd={q}
-g   <google>=https://www.google.com/search?q={q}
-tb  <taobao>=http://s.taobao.com/search?q={q}
-wk=https://zh.wikipedia.org/w/index.php?search={q}
-m=https://developer.mozilla.org/zh-CN/search?q={q}
+default="https://www.google.com/search?q={q}"
+bd="https://www.baidu.com/s?wd={q}"
+g   <google>="https://www.google.com/search?q={q}"
+tb  <taobao>="http://s.taobao.com/search?q={q}"
+wk="https://zh.wikipedia.org/w/index.php?search={q}"
+m="https://developer.mozilla.org/zh-CN/search?q={q}"
 
 
 ;----------------------------------------------------------------
@@ -161,17 +163,10 @@ m=https://developer.mozilla.org/zh-CN/search?q={q}
 
 [QRun]
 ; Normal
-ie1="C:\Program Files\Internet Explorer\iexplore.exe"
+ie1=run "C:\Program Files\Internet Explorer\iexplore.exe"
 
 ; Run as administrator
-ie2=*runas "C:\Program Files\Internet Explorer\iexplore.exe"
-
-; Run in full screen
-ie3 <full screen>="C:\Program Files\Internet Explorer\iexplore.exe" -k
-
-; Run as administrator, in full screen
-ie4=*runas "C:\Program Files\Internet Explorer\iexplore.exe" -k
-
+ie2=run *runas "C:\Program Files\Internet Explorer\iexplore.exe"
 
 
 ;----------------------------------------------------------------
@@ -198,7 +193,7 @@ ie4=*runas "C:\Program Files\Internet Explorer\iexplore.exe" -k
 ; - You can add "(0~n spaces)<xxx>" after the key name as a reminder
 
 [QWeb]
-cldocs=https://capslox.com/capslock-plus/en.html
+cldocs="https://capslox.com/capslock-plus/en.html"
 
 
 ;----------------------------------------------------------------;
@@ -231,49 +226,49 @@ clp=capslockplus
 ;----------------------------------------------------------------
 ; ## Qbar's style settings
 
-[QStyle]
+;[QStyle]
 ; Border color
 ; Specify one of 16 HTML basic colors or 6-bit RGB color values (the 0x prefix can be omitted). For example:
 ; red, ffffaa, FFFFAA, 0xFFFFAA. The color settings below are the same.
 
-borderBackgroundColor=red
+;borderBackgroundColor=red
 
 ; Rounded corners, 0 means right angle
-borderRadius=9
+;borderRadius=9
 
 ; The background color of the input box
-textBackgroundColor=green
+;textBackgroundColor=green
 
 ; The color of the input text
-textColor=ffffff
+;textColor=ffffff
 
 ; The font name of the input text
 ;editFontName=Consolas bold
-textFontName=Hiragino Sans GB W6
+;textFontName=Hiragino Sans GB W6
 
 ; The font size of the input text
-textFontSize=12
+;textFontSize=12
 
 ; The font name of the drop-down list
-listFontName=consolas
+;listFontName=consolas
 
 ; The font size of the drop-down list
-listFontSize=10
+;listFontSize=10
 
 ; The background color of the drop-down list
-listBackgroundColor=blue
+;listBackgroundColor=blue
 
 ; The text color of the drop-down list
-listColor=0x000000
+;listColor=0x000000
 
 ; The number of rows in the drop-down list
-listCount=5
+;listCount=5
 
 ; The height of each row in the drop-down list
-lineHeight=19
+;lineHeight=19
 
 ; Progress bar color
-progressColor=0x00cc99
+;progressColor=0x00cc99
 
 ;----------------------------------------------------------------;
 ; ## +T Translation settings (Chinese <-> English)
@@ -293,10 +288,10 @@ apiType=1
 ; Parameters for paid version Youdao application
 
 ; Application ID
-appPaidID=xxx
+;appPaidID=xxx
 
 ; Application key
-appPaidKey=xxx
+;appPaidKey=xxx
 
 ; Capslock+ could use either the free version or the paid version of the Yodao API before, to provide translation functions, now Yodao no longer provides the free version of the API,
 ; only the paid version of the API can be used. The following parameters related to the free version of the API have been deprecated, please delete them if they are used in your settings file.
@@ -306,9 +301,10 @@ appPaidKey=xxx
 
 ;----------------------------------------------------------------;
 
-)
+)"
 
-lang_settingsDemoFileContent_2:=(
+lang_settingsDemoFileContent_2 := "
+(
 ; ## Hotkey settings
 
 ; - Available hotkeys:
@@ -749,9 +745,10 @@ keyfunc_wheel_up
 keyfunc_wheel_down
 
 
-)
+)"
 global lang_winsInfosRecorderIniInit:=""
-lang_winsInfosRecorderIniInit:=(
+lang_winsInfosRecorderIniInit := "
+(
 ;------------ Encoding: UTF-16 ------------
 ; The data for Window Binding, DO NOT modify the content of this file!
 ; Just click the "X" in the upper right.
@@ -801,12 +798,14 @@ bindType=
 class_0=
 exe_0=
 id_0=
-)
+)"
 
 ; keysFunction.ahk
 global lang_kf_getDebugText:=""
-lang_kf_getDebugText:=(
+lang_kf_getDebugText := "
+(
 The string for debug TabScript
 Click "OK" to copy it to the clipboard.
-)
+)"
 return
+}

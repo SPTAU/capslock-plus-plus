@@ -1,5 +1,5 @@
 ﻿;如果没有在set.ini设置按键的话，就按这里的默认设置执行
-keysInit:
+keysInit(){
 global keyset:=CLSets.Keys
 
 
@@ -14,7 +14,7 @@ if(CLSets.global.default_hotkey_scheme == "capslock_plus") {
 }
 
 return
-
+}
 
 keySchemeInit_capslox(){
     global
@@ -153,7 +153,7 @@ keySchemeInit_capslox(){
         keyset.caps_f11:="keyFunc_doNothing"
     if(!keyset.caps_f12)
         keyset.caps_f12:="keyFunc_switchClipboard"
-        
+
     ; LAlt--------------------------------------------
 
     if(!keyset.caps_lalt_a)
@@ -208,7 +208,7 @@ keySchemeInit_capslox(){
         keyset.caps_lalt_y:="keyFunc_selectUp(30)"
     if(!keyset.caps_lalt_z)
         keyset.caps_lalt_z:="keyFunc_doNothing"
-        
+
     if(!keyset.caps_lalt_backquote)
         keyset.caps_lalt_backquote:="keyFunc_doNothing"
     if(!keyset.caps_lalt_1)
@@ -261,7 +261,7 @@ keySchemeInit_capslox(){
         keyset.caps_lalt_space:="keyFunc_doNothing"
     if(!keyset.caps_lalt_ralt)
         keyset.caps_lalt_ralt:="keyFunc_doNothing"
-        
+
     ;--------------------window-------------------
     if(!keyset.caps_win_1)
         keyset.caps_win_1:="keyFunc_winbind_binding(1)"
@@ -283,9 +283,9 @@ keySchemeInit_capslox(){
         keyset.caps_win_9:="keyFunc_winbind_binding(9)"
     if(!keyset.caps_win_0)
         keyset.caps_win_0:="keyFunc_winbind_binding(10)"
-        
+
     ;--------------------other--------------------
-        
+
     if(!keyset.caps_lalt_wheelUp)
         keyset.caps_lalt_wheelUp:="keyFunc_mouseSpeedIncrease"
     if(!keyset.caps_lalt_wheelDown)
@@ -395,7 +395,7 @@ keySchemeInit_capslockPlus(){
     if(!keyset.caps_semicolon)
         keyset.caps_semicolon:="keyFunc_end"
     if(!keyset.caps_quote)
-        keyset.caps_quote:="keyFunc_doubleChar("""""""","""""""")"
+        keyset.caps_quote:="keyFunc_doubleChar(`",`")"
     if(!keyset.caps_enter)
         keyset.caps_enter:="keyFunc_enterWherever"
     if(!keyset.caps_comma)
@@ -433,7 +433,7 @@ keySchemeInit_capslockPlus(){
         keyset.caps_f11:="keyFunc_doNothing"
     if(!keyset.caps_f12)
         keyset.caps_f12:="keyFunc_switchClipboard"
-        
+
     ; LAlt--------------------------------------------
 
     if(!keyset.caps_lalt_a)
@@ -488,7 +488,7 @@ keySchemeInit_capslockPlus(){
         keyset.caps_lalt_y:="keyFunc_pageMoveLineUp(5)"
     if(!keyset.caps_lalt_z)
         keyset.caps_lalt_z:="keyFunc_putWinToBottom"
-        
+
     if(!keyset.caps_lalt_backquote)
         keyset.caps_lalt_backquote:="keyFunc_winbind_binding(9)"
     if(!keyset.caps_lalt_1)
@@ -541,11 +541,11 @@ keySchemeInit_capslockPlus(){
         keyset.caps_lalt_space:="keyFunc_doNothing"
     if(!keyset.caps_lalt_ralt)
         keyset.caps_lalt_ralt:="keyFunc_doNothing"
-        
 
-        
+
+
     ;--------------------other--------------------
-        
+
     if(!keyset.caps_lalt_wheelUp)
         keyset.caps_lalt_wheelUp:="keyFunc_mouseSpeedIncrease"
     if(!keyset.caps_lalt_wheelDown)

@@ -12,5 +12,5 @@
 ; 4. Press `CapsLock+F7` to invoke the function
 
 keyFunc_example1(){
-  msgbox example1
+  msgbox "example1"
 }

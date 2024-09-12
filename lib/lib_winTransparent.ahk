@@ -2,7 +2,7 @@ winTransparentInit:
 global winTranSetting, transpWinId, allowWinTranspToggle, transp
 
 ; 窗口透明度
-;  transp:=CLSets.Global.mouseSpeed
+;  transp:=CLSets.System.mouseSpeed
 
 return
 
@@ -19,7 +19,7 @@ winTransparent(){
 
         setTimer, checkIfTranspToggle, -300 ; 快速短按的话反转窗口的透明度
     }
-    
+
     return
 }
 
@@ -64,7 +64,7 @@ winTranspKeyCheck:
 if(!GetKeyState("f4", "P") || !Capslock){
     setTimer, checkIfTranspToggle, off ; 关闭短按切换透明度
     setTimer, winTranspKeyCheck, off
-    
+
     if(allowWinTranspToggle){
 
         ;  WinGet, transp, Transparent, ahk_id %transpWinId%

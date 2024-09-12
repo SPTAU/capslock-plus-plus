@@ -3,25 +3,26 @@
 
 ; If the script is not elevated, relaunch as administrator and kill current instance:
 full_command_line := DllCall("GetCommandLine", "str")
+
 if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 {
-    try ; leads to having the script re-launching itself as administrator
+    try
     {
         if A_IsCompiled
-            Run *RunAs "%A_ScriptFullPath%" /restart
+            Run '*RunAs "' A_ScriptFullPath '" /restart'
         else
-            Run *RunAs "%A_AhkPath%" /restart "%A_ScriptFullPath%"
+            Run '*RunAs "' A_AhkPath '" /restart "' A_ScriptFullPath '"'
     }
     ExitApp
 }
 
-if FileExist(capslock+icon.ico){
-    TraySetIcon(capslock+icon.ico, 1, true)
+if FileExist("capslock+icon.ico"){
+    TraySetIcon("capslock+icon.ico", 1, true)
 }
 
-SetStoreCapslockMode Off
+SetStoreCapslockMode False
 
-global CLversion:="Version: 3.3.0.0 | 2023-10-22`n`nCopyright Junkai Chen"
+global CLversionPP:="Version: 1.0 | 2024-09-11 | Copyright SPTAU"
 
 #Include lib
 #Include lib_init.ahk ;The beginning of all things
@@ -41,23 +42,24 @@ global CLversion:="Version: 3.3.0.0 | 2023-10-22`n`nCopyright Junkai Chen"
 ;  #Include lib_clQ.ahk ;capslock+Q
 ;  #Include lib_ydTrans.ahk  ;capslock+T translate
 ;  #Include lib_clTab.ahk
-;  #Include lib_functions.ahk ;public functions
+#Include lib_functions.ahk ;public functions
 ;  #Include lib_bindWins.ahk ;capslock+` 1~8, windows bind
 ;  #Include lib_winJump.ahk
 ;  #Include lib_winTransparent.ahk
 ;  #Include lib_mouseSpeed.ahk
 ;  #Include lib_mathBoard.ahk
-;  #include lib_loadAnimation.ahk
+#include lib_loadAnimation.ahk
 
 
 ;  change dir
 #include ..\userAHK
 #include *i main.ahk
 
+SetTimer initAll(), -400 ;等个100毫秒，等待其他文件的include都完成
+
 A_HotkeysPerInterval := 500
 ;  #WinActivateForce
-Process Priority,,High
-
+ProcessSetPriority "High"
 
 start:
 
@@ -74,7 +76,7 @@ CapsLock:=1
 
 SetTimer setCapsLock2, -300 ; 300ms 犹豫操作时间
 
-settimer changeMouseSpeed, 50 ;暂时修改鼠标速度
+;settimer changeMouseSpeed, 50 ;暂时修改鼠标速度
 
 KeyWait Capslock
 CapsLock:="" ;Capslock最优先置空，来关闭 Capslock+ 功能的触发
@@ -93,51 +95,26 @@ if CapsLock2
 }
 CapsLock2:=""
 
-;
-if(winTapedX!=-1)
-{
-    winsSort(winTapedX)
-}
 return
 }
 
 <!Capslock::
 #Capslock:: {
 ; 按下lalt+Capslock或win+Capslock时，同样启动 Capslock+ 功能
-CapsLock:=1
+CapsLock := 1
 KeyWait Capslock
-CapsLock:=""
+CapsLock := ""
 return
-
-setCapsLock2:
-CapsLock2:=""
-return
-
-OnClipboardChange:  ; 剪贴板内容改变时将运行
-
-; 如果有复制操作时，capslock键没有按下，那就是系统原生复制
-if (allowRunOnClipboardChange && !CapsLock && CLsets.global.allowClipboard != "0")
+}
+setCapsLock2()
 {
-    try {
-        clipSaver("s")
-    } catch _ {
-        sleep 100
-        clipSaver("s")
-    }
-    whichClipboardNow:=0
-}
-allowRunOnClipboardChange:=true
-return
-}
-
-;----------------------------keys-set-start-----------------------------
-#HotIf CLsets.global.allowClipboard != "0"
-$^v::{
-    try
-        keyFunc_pasteSystem()
+    CapsLock2:=""
     return
 }
-#HotIf
+
+
+;----------------------------keys-set-start-----------------------------
+
 
 #HotIf CapsLock ;when capslock key press and hold
 
@@ -285,30 +262,34 @@ ralt:: {
     Return
 }
 
-'::
-{try
-    runFunc(keyset.caps_quote)
-Capslock2:=""
-return}
+':: {
+    try
+        runFunc(keyset.caps_quote)
+    Capslock2:=""
+    return
+}
 
 
-,::
-{try
-    runFunc(keyset.caps_comma)
-Capslock2:=""
-return}
+,:: {
+    try
+        runFunc(keyset.caps_comma)
+    Capslock2:=""
+    return
+}
 
-.::
-{try
-    runFunc(keyset.caps_dot)
-Capslock2:=""
-return}
+.:: {
+    try
+        runFunc(keyset.caps_dot)
+    Capslock2:=""
+    return
+}
 
-/::
-{try
-    runFunc(keyset.caps_slash)
-Capslock2:=""
-Return}
+/:: {
+    try
+        runFunc(keyset.caps_slash)
+    Capslock2:=""
+    return
+}
 
 ;  RAlt::
 ;  try
@@ -320,449 +301,523 @@ Return}
 
 ;---------------------caps+lalt----------------
 
-<!a::
-{try
-    runFunc(keyset.caps_lalt_a)
-Capslock2:=""
-return}
-
-<!b::
-{try
-    runFunc(keyset.caps_lalt_b)
-Capslock2:=""
-return}
-
-<!c::
-{try
-    runFunc(keyset.caps_lalt_c)
-Capslock2:=""
-return}
-
-<!d::
-{try
-    runFunc(keyset.caps_lalt_d)
-Capslock2:=""
-return}
-
-<!e::
-{try
-    runFunc(keyset.caps_lalt_e)
-Capslock2:=""
-Return}
-
-<!f::
-{try
-    runFunc(keyset.caps_lalt_f)
-Capslock2:=""
-Return}
-
-<!g::
-{try
-    runFunc(keyset.caps_lalt_g)
-Capslock2:=""
-Return}
-
-<!h::
-{try
-    runFunc(keyset.caps_lalt_h)
-Capslock2:=""
-return}
-
-<!i::
-{try
-    runFunc(keyset.caps_lalt_i)
-Capslock2:=""
-return}
-
-<!j::
-{try
-    runFunc(keyset.caps_lalt_j)
-Capslock2:=""
-return}
-
-<!k::
-{try
-    runFunc(keyset.caps_lalt_k)
-Capslock2:=""
-return}
-
-<!l::
-{try
-    runFunc(keyset.caps_lalt_l)
-Capslock2:=""
-return}
-
-<!m::
-{try
-    runFunc(keyset.caps_lalt_m)
-Capslock2:=""
-return}
-
-<!n::
-{try
-    runFunc(keyset.caps_lalt_n)
-Capslock2:=""
-Return}
-
-<!o::
-{try
-    runFunc(keyset.caps_lalt_o)
-Capslock2:=""
-return}
-
-<!p::
-{try
-    runFunc(keyset.caps_lalt_p)
-Capslock2:=""
-Return}
-
-<!q::
-{try
-    runFunc(keyset.caps_lalt_q)
-Capslock2:=""
-return}
-
-<!r::
-{try
-    runFunc(keyset.caps_lalt_r)
-Capslock2:=""
-Return}
-
-<!s::
-{try
-    runFunc(keyset.caps_lalt_s)
-Capslock2:=""
-Return}
-
-<!t::
-{try
-    runFunc(keyset.caps_lalt_t)
-Capslock2:=""
-Return}
-
-<!u::
-{try
-    runFunc(keyset.caps_lalt_u)
-Capslock2:=""
-return}
-
-<!v::
-{try
-    runFunc(keyset.caps_lalt_v)
-Capslock2:=""
-Return}
-
-<!w::
-try
-    runFunc(keyset.caps_lalt_w)
-Capslock2:=""
-Return
-
-<!x::
-{try
-    runFunc(keyset.caps_lalt_x)
-Capslock2:=""
-Return}
-
-<!y::
-{try
-    runFunc(keyset.caps_lalt_y)
-Capslock2:=""
-return}
-
-<!z::
-{try
-    runFunc(keyset.caps_lalt_z)
-Capslock2:=""
-Return}
-
-<!`::
-{try
-    runFunc(keyset.caps_lalt_backquote)
-Capslock2:=""
-return}
-
-<!1::
-{try
-    runFunc(keyset.caps_lalt_1)
-Capslock2:=""
-return}
-
-<!2::
-{try
-    runFunc(keyset.caps_lalt_2)
-Capslock2:=""
-return}
-
-<!3::
-{try
-    runFunc(keyset.caps_lalt_3)
-Capslock2:=""
-return}
-
-<!4::
-{try
-    runFunc(keyset.caps_lalt_4)
-Capslock2:=""
-return}
-
-<!5::
-{try
-    runFunc(keyset.caps_lalt_5)
-Capslock2:=""
-return}
-
-<!6::
-{try
-    runFunc(keyset.caps_lalt_6)
-Capslock2:=""
-return}
-
-<!7::
-{try
-    runFunc(keyset.caps_lalt_7)
-Capslock2:=""
-return}
-
-<!8::
-{try
-    runFunc(keyset.caps_lalt_8)
-Capslock2:=""
-return}
-
-<!9::
-{try
-    runFunc(keyset.caps_lalt_9)
-Capslock2:=""
-Return}
-
-<!0::
-{try
-    runFunc(keyset.caps_lalt_0)
-Capslock2:=""
-Return}
-
-<!-::
-{try
-    runFunc(keyset.caps_lalt_minus)
-Capslock2:=""
-return}
-
-<!=::
-{try
-    runFunc(keyset.caps_lalt_equal)
-Capslock2:=""
-Return}
-
-<!BackSpace::
-{try
-    runFunc(keyset.caps_lalt_backspace)
-Capslock2:=""
-Return}
-
-<!Tab::
-{try
-    runFunc(keyset.caps_lalt_tab)
-Capslock2:=""
-Return}
-
-<![::
-{try
-    runFunc(keyset.caps_lalt_leftSquareBracket)
-Capslock2:=""
-Return}
-
-<!]::
-{try
-    runFunc(keyset.caps_lalt_rightSquareBracket)
-Capslock2:=""
-Return}
-
-<!\::
-{try
-    runFunc(keyset.caps_lalt_Backslash)
-Capslock2:=""
-return}
-
-<!`;::
-{try
-    runFunc(keyset.caps_lalt_semicolon)
-Capslock2:=""
-Return}
-
-<!'::
-{try
-    runFunc(keyset.caps_lalt_quote)
-Capslock2:=""
-return}
-
-<!Enter::
-{try
-    runFunc(keyset.caps_lalt_enter)
-Capslock2:=""
-Return}
-
-<!,::
-{try
-    runFunc(keyset.caps_lalt_comma)
-Capslock2:=""
-Return}
-
-<!.::
-{try
-    runFunc(keyset.caps_lalt_dot)
-Capslock2:=""
-return}
-
-<!/::
-{try
-    runFunc(keyset.caps_lalt_slash)
-Capslock2:=""
-Return}
-
-<!Space::
-{try
-    runFunc(keyset.caps_lalt_space)
-Capslock2:=""
-Return}
-
-<!RAlt::
-{try
-    runFunc(keyset.caps_lalt_ralt)
-Capslock2:=""
-return}
-
-<!F1::
-{try
-    runFunc(keyset.caps_lalt_f1)
-Capslock2:=""
-return}
-
-<!F2::
-{try
-    runFunc(keyset.caps_lalt_f2)
-Capslock2:=""
-return}
-
-<!F3::
-{try
-    runFunc(keyset.caps_lalt_f3)
-Capslock2:=""
-return}
-
-<!F4::
-{try
-    runFunc(keyset.caps_lalt_f4)
-Capslock2:=""
-return}
-
-<!F5::
-{try
-    runFunc(keyset.caps_lalt_f5)
-Capslock2:=""
-return}
-
-<!F6::
-{try
-    runFunc(keyset.caps_lalt_f6)
-Capslock2:=""
-return}
-
-<!F7::
-{try
-    runFunc(keyset.caps_lalt_f7)
-Capslock2:=""
-return}
-
-<!F8::
-{try
-    runFunc(keyset.caps_lalt_f8)
-Capslock2:=""
-return}
-
-<!F9::
-{try
-    runFunc(keyset.caps_lalt_f9)
-Capslock2:=""
-return}
-
-<!F10::
-{try
-    runFunc(keyset.caps_lalt_f10)
-Capslock2:=""
-return}
-
-<!F11::
-{try
-    runFunc(keyset.caps_lalt_f11)
-Capslock2:=""
-return}
-
-<!F12::
-try
-    runFunc(keyset.caps_lalt_f12)
-Capslock2:=""
-return
-
-#1::
-try
-    runFunc(keyset.caps_win_1)
-Capslock2:=""
-return
-
-#2::
-try
-    runFunc(keyset.caps_win_2)
-Capslock2:=""
-return
-
-#3::
-try
-    runFunc(keyset.caps_win_3)
-Capslock2:=""
-return
-
-#4::
-try
-    runFunc(keyset.caps_win_4)
-Capslock2:=""
-return
-
-#5::
-try
-    runFunc(keyset.caps_win_5)
-Capslock2:=""
-return
-
-#6::
-try
-    runFunc(keyset.caps_win_6)
-Capslock2:=""
-return
-
-#7::
-try
-    runFunc(keyset.caps_win_7)
-Capslock2:=""
-return
-
-#8::
-try
-    runFunc(keyset.caps_win_8)
-Capslock2:=""
-return
-
-#9::
-try
-    runFunc(keyset.caps_win_9)
-Capslock2:=""
-return
-
-#0::
-try
-    runFunc(keyset.caps_win_0)
-Capslock2:=""
-return
+<!a:: {
+    try
+        runFunc(keyset.caps_lalt_a)
+    Capslock2:=""
+    return
+}
+
+<!b:: {
+    try
+        runFunc(keyset.caps_lalt_b)
+    Capslock2:=""
+    return
+}
+
+<!c:: {
+    try
+        runFunc(keyset.caps_lalt_c)
+    Capslock2:=""
+    return
+}
+
+<!d:: {
+    try
+        runFunc(keyset.caps_lalt_d)
+    Capslock2:=""
+    return
+}
+
+<!e:: {
+    try
+        runFunc(keyset.caps_lalt_e)
+    Capslock2:=""
+    return
+}
+
+<!f:: {
+    try
+        runFunc(keyset.caps_lalt_f)
+    Capslock2:=""
+    return
+}
+
+<!g:: {
+    try
+        runFunc(keyset.caps_lalt_g)
+    Capslock2:=""
+    return
+}
+
+<!h:: {
+    try
+        runFunc(keyset.caps_lalt_h)
+    Capslock2:=""
+    return
+}
+
+<!i:: {
+    try
+        runFunc(keyset.caps_lalt_i)
+    Capslock2:=""
+    return
+}
+
+<!j:: {
+    try
+        runFunc(keyset.caps_lalt_j)
+    Capslock2:=""
+    return
+}
+
+<!k:: {
+    try
+        runFunc(keyset.caps_lalt_k)
+    Capslock2:=""
+    return
+}
+
+<!l:: {
+    try
+        runFunc(keyset.caps_lalt_l)
+    Capslock2:=""
+    return
+}
+
+<!m:: {
+    try
+        runFunc(keyset.caps_lalt_m)
+    Capslock2:=""
+    return
+}
+
+<!n:: {
+    try
+        runFunc(keyset.caps_lalt_n)
+    Capslock2:=""
+    return
+}
+
+<!o:: {
+    try
+        runFunc(keyset.caps_lalt_o)
+    Capslock2:=""
+    return
+}
+
+<!p:: {
+    try
+        runFunc(keyset.caps_lalt_p)
+    Capslock2:=""
+    return
+}
+
+<!q:: {
+    try
+        runFunc(keyset.caps_lalt_q)
+    Capslock2:=""
+    return
+}
+
+<!r:: {
+    try
+        runFunc(keyset.caps_lalt_r)
+    Capslock2:=""
+    return
+}
+
+<!s:: {
+    try
+        runFunc(keyset.caps_lalt_s)
+    Capslock2:=""
+    return
+}
+
+<!t:: {
+    try
+        runFunc(keyset.caps_lalt_t)
+    Capslock2:=""
+    return
+}
+
+<!u:: {
+    try
+        runFunc(keyset.caps_lalt_u)
+    Capslock2:=""
+    return
+}
+
+<!v:: {
+    try
+        runFunc(keyset.caps_lalt_v)
+    Capslock2:=""
+    return
+}
+
+<!w:: {
+    try
+        runFunc(keyset.caps_lalt_w)
+    Capslock2:=""
+    return
+}
+
+<!x:: {
+    try
+        runFunc(keyset.caps_lalt_x)
+    Capslock2:=""
+    return
+}
+
+<!y:: {
+    try
+        runFunc(keyset.caps_lalt_y)
+    Capslock2:=""
+    return
+}
+
+<!z:: {
+    try
+        runFunc(keyset.caps_lalt_z)
+    Capslock2:=""
+    return
+}
+
+<!`:: {
+    try
+        runFunc(keyset.caps_lalt_backquote)
+    Capslock2:=""
+    return
+}
+
+<!1:: {
+    try
+        runFunc(keyset.caps_lalt_1)
+    Capslock2:=""
+    return
+}
+
+<!2:: {
+    try
+        runFunc(keyset.caps_lalt_2)
+    Capslock2:=""
+    return
+}
+
+<!3:: {
+    try
+        runFunc(keyset.caps_lalt_3)
+    Capslock2:=""
+    return
+}
+
+<!4:: {
+    try
+        runFunc(keyset.caps_lalt_4)
+    Capslock2:=""
+    return
+}
+
+<!5:: {
+    try
+        runFunc(keyset.caps_lalt_5)
+    Capslock2:=""
+    return
+}
+
+<!6:: {
+    try
+        runFunc(keyset.caps_lalt_6)
+    Capslock2:=""
+    return
+}
+
+<!7:: {
+    try
+        runFunc(keyset.caps_lalt_7)
+    Capslock2:=""
+    return
+}
+
+<!8:: {
+    try
+        runFunc(keyset.caps_lalt_8)
+    Capslock2:=""
+    return
+}
+
+<!9:: {
+    try
+        runFunc(keyset.caps_lalt_9)
+    Capslock2:=""
+    return
+}
+
+<!0:: {
+    try
+        runFunc(keyset.caps_lalt_0)
+    Capslock2:=""
+    return
+}
+
+<!-:: {
+    try
+        runFunc(keyset.caps_lalt_minus)
+    Capslock2:=""
+    return
+}
+
+<!=:: {
+    try
+        runFunc(keyset.caps_lalt_equal)
+    Capslock2:=""
+    return
+}
+
+<!BackSpace:: {
+    try
+        runFunc(keyset.caps_lalt_backspace)
+    Capslock2:=""
+    return
+}
+
+<!Tab:: {
+    try
+        runFunc(keyset.caps_lalt_tab)
+    Capslock2:=""
+    return
+}
+
+<![:: {
+    try
+        runFunc(keyset.caps_lalt_leftSquareBracket)
+    Capslock2:=""
+    return
+}
+
+<!]:: {
+    try
+        runFunc(keyset.caps_lalt_rightSquareBracket)
+    Capslock2:=""
+    return
+}
+
+<!\:: {
+    try
+        runFunc(keyset.caps_lalt_Backslash)
+    Capslock2:=""
+    return
+}
+
+<!`;:: {
+    try
+        runFunc(keyset.caps_lalt_semicolon)
+    Capslock2:=""
+    return
+}
+
+<!':: {
+    try
+        runFunc(keyset.caps_lalt_quote)
+    Capslock2:=""
+    return
+}
+
+<!Enter:: {
+    try
+        runFunc(keyset.caps_lalt_enter)
+    Capslock2:=""
+    return
+}
+
+<!,:: {
+    try
+        runFunc(keyset.caps_lalt_comma)
+    Capslock2:=""
+    return
+}
+
+<!.:: {
+    try
+        runFunc(keyset.caps_lalt_dot)
+    Capslock2:=""
+    return
+}
+
+<!/:: {
+    try
+        runFunc(keyset.caps_lalt_slash)
+    Capslock2:=""
+    return
+}
+
+<!Space:: {
+    try
+        runFunc(keyset.caps_lalt_space)
+    Capslock2:=""
+    return
+}
+
+<!RAlt:: {
+    try
+        runFunc(keyset.caps_lalt_ralt)
+    Capslock2:=""
+    return
+}
+
+<!F1:: {
+    try
+        runFunc(keyset.caps_lalt_f1)
+    Capslock2:=""
+    return
+}
+
+<!F2:: {
+    try
+        runFunc(keyset.caps_lalt_f2)
+    Capslock2:=""
+    return
+}
+
+<!F3:: {
+    try
+        runFunc(keyset.caps_lalt_f3)
+    Capslock2:=""
+    return
+}
+
+<!F4:: {
+    try
+        runFunc(keyset.caps_lalt_f4)
+    Capslock2:=""
+    return
+}
+
+<!F5:: {
+    try
+        runFunc(keyset.caps_lalt_f5)
+    Capslock2:=""
+    return
+}
+
+<!F6:: {
+    try
+        runFunc(keyset.caps_lalt_f6)
+    Capslock2:=""
+    return
+}
+
+<!F7:: {
+    try
+        runFunc(keyset.caps_lalt_f7)
+    Capslock2:=""
+    return
+}
+
+<!F8:: {
+    try
+        runFunc(keyset.caps_lalt_f8)
+    Capslock2:=""
+    return
+}
+
+<!F9:: {
+    try
+        runFunc(keyset.caps_lalt_f9)
+    Capslock2:=""
+    return
+}
+
+<!F10:: {
+    try
+        runFunc(keyset.caps_lalt_f10)
+    Capslock2:=""
+    return
+}
+
+<!F11:: {
+    try
+        runFunc(keyset.caps_lalt_f11)
+    Capslock2:=""
+    return
+}
+
+<!F12:: {
+    try
+        runFunc(keyset.caps_lalt_f12)
+    Capslock2:=""
+    return
+}
+
+#1:: {
+    try
+        runFunc(keyset.caps_win_1)
+    Capslock2:=""
+    return
+}
+
+#2:: {
+    try
+        runFunc(keyset.caps_win_2)
+    Capslock2:=""
+    return
+}
+
+#3:: {
+    try
+        runFunc(keyset.caps_win_3)
+    Capslock2:=""
+    return
+}
+
+#4:: {
+    try
+        runFunc(keyset.caps_win_4)
+    Capslock2:=""
+    return
+}
+
+#5:: {
+    try
+        runFunc(keyset.caps_win_5)
+    Capslock2:=""
+    return
+}
+
+#6:: {
+    try
+        runFunc(keyset.caps_win_6)
+    Capslock2:=""
+    return
+}
+
+#7:: {
+    try
+        runFunc(keyset.caps_win_7)
+    Capslock2:=""
+    return
+}
+
+#8:: {
+    try
+        runFunc(keyset.caps_win_8)
+    Capslock2:=""
+    return
+}
+
+#9:: {
+    try
+        runFunc(keyset.caps_win_9)
+    Capslock2:=""
+    return
+}
+
+#0:: {
+    try
+        runFunc(keyset.caps_win_0)
+    Capslock2:=""
+    return
+}
 
 ;  #s::
 ;      keyFunc_activateSideWin("l")
@@ -821,12 +876,12 @@ return
 
 
 
-#If
+#HotIf
 
 
 
 
 GuiClose:
 GuiEscape:
-Gui, Cancel
+Gui Cancel
 return

@@ -4,16 +4,16 @@ SPI_GETMOUSESPEED = 0x70
 SPI_SETMOUSESPEED = 0x71
 
 
-mouseSpeed:=CLSets.Global.mouseSpeed!=""?CLSets.Global.mouseSpeed:3
+mouseSpeed:=CLSets.System.mouseSpeed!=""?CLSets.System.mouseSpeed:3
 if(mouseSpeed<1)
 {
     mouseSpeed:=1
-    setSettings("Global","mouseSpeed",mouseSpeed)    
+    setSettings("System","mouseSpeed",mouseSpeed)
 }
 else if(mouseSpeed>20)
 {
     mouseSpeed:=20
-    setSettings("Global","mouseSpeed",mouseSpeed)
+    setSettings("System","mouseSpeed",mouseSpeed)
 }
 return
 

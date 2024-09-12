@@ -1515,7 +1515,7 @@ ButtonSubmit:
         {
             if(paramStr="version"||paramStr="about")
             {
-                MsgBox, 0x40000, ,%CLversion%
+                MsgBox, 0x40000, ,%CLPPversion%
                 return
             }
 

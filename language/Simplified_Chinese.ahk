@@ -1,13 +1,13 @@
-﻿language_Simplified_Chinese:
+﻿language_Simplified_Chinese(){
 ; lib\lib_bindWins.ahk
 global lang_bw_noWIRini:="CapsLock+winsInfosRecorder.ini 不存在"
 
 ; lib_clq.ahk
-global lang_clq_addIni:="确定将以下字符串简写成 {replace0}，并记录到 {replace1}？"
-global lang_clq_existing:="{replace0}`n已存在于 {replace1}，确定用以下设置覆盖？"
-global lang_clq_qrunFileNotExist:="QRun中存在以下记录，而对应文件（文件夹）不存在，是否删除该设置？"
-global lang_clq_noCmd:="没有该命令"
-global lang_clq_emptyFolder:="<空文件夹>"
+global lang_clq_addIni := "确定将以下字符串简写成 {replace0}，并记录到 {replace1}？"
+global lang_clq_existing := "{replace0}`n已存在于 {replace1}，确定用以下设置覆盖？"
+global lang_clq_qrunFileNotExist := "QRun中存在以下记录，而对应文件（文件夹）不存在，是否删除该设置？"
+global lang_clq_noCmd := "没有该命令"
+global lang_clq_emptyFolder := "<空文件夹>"
 
 ; ydTrans.ahk
 global lang_yd_translating:="翻译中...  （如果网络太差，翻译请求会暂时阻塞程序，稍等就好）"
@@ -20,19 +20,20 @@ global lang_yd_errorNoResults:="无词典结果"
 global lang_yd_errorTextTooLong:="要翻译的文本过长"
 global lang_yd_errorCantTrans:="无法进行有效的翻译"
 global lang_yd_errorLangType:="不支持的语言类型"
-global lang_yd_errorKeyInvalid:="无效的key"
-global lang_yd_errorSpendingLimit:="已达到今日消费上限，或者请求长度超过今日可消费字符数"
-global lang_yd_errorNoFunds:="帐户余额不足"
-global lang_yd_trans:="------------------------------------有道翻译------------------------------------"
-global lang_yd_dict:="------------------------------------有道词典------------------------------------"
-global lang_yd_phrase:="--------------------------------------短语--------------------------------------"
-global lang_yd_free_key_unavailable_warning:="有道翻译已经不再提供免费的翻译 API，现在只能使用收费 API（新账号有试用额度），请参考 CapsLock+settingsDemo.ini 文件中 [TTranslate] 部分的说明设置密钥后使用翻译功能。"
+global lang_yd_errorKeyInvalid := "无效的key"
+global lang_yd_errorSpendingLimit := "已达到今日消费上限，或者请求长度超过今日可消费字符数"
+global lang_yd_errorNoFunds := "帐户余额不足"
+global lang_yd_trans := "------------------------------------有道翻译------------------------------------"
+global lang_yd_dict := "------------------------------------有道词典------------------------------------"
+global lang_yd_phrase := "--------------------------------------短语--------------------------------------"
+global lang_yd_free_key_unavailable_warning := "有道翻译已经不再提供免费的翻译 API，现在只能使用收费 API（新账号有试用额度），请参考 CapsLock+settingsDemo.ini 文件中 [TTranslate] 部分的说明设置密钥后使用翻译功能。"
 
 global lang_settingsFileContent:=""
-lang_settingsFileContent:=(
+lang_settingsFileContent := "
+(
 ;------------ Encoding: UTF-16 ------------
 ; 请对照 CapsLock+settingsDemo.ini 来配置相关设置
-[Global]
+[System]
 
 loadScript=scriptDemo.js
 
@@ -50,16 +51,17 @@ loadScript=scriptDemo.js
 
 [Keys]
 
-)
+)"
 global lang_settingsDemoFileContent_1:=""
 global lang_settingsDemoFileContent_2:=""
-lang_settingsDemoFileContent_1 := (
+lang_settingsDemoFileContent_1 := "
+(
 ;------------ Encoding: UTF-16 ------------
 ; # CapsLock+ 设置样本
 ; - ******请务必阅读以下说明：******
 
 ; - **这里的设置是只读的，仅作说明参考，不要修改这里的设置（修改了也无效），需要自定义设置请在 CapsLock+settings.ini 中的对应段名中作添加修改
-;     例如，需要开启开机自启动，请在 CapsLock+settings.ini 的 [Global] 下添加：autostart=1，并保存
+;     例如，需要开启开机自启动，请在 CapsLock+settings.ini 的 [System] 下添加：autostart=1，并保存
 
 ; - "[]"里面是段名，不能修改
 ; - 各段下所有设置的格式都为：键名=键值，每行一个
@@ -70,7 +72,7 @@ lang_settingsDemoFileContent_1 := (
 
 ;----------------------------------------------------------------
 ; ## 全局设置
-[Global]
+[System]
 ;是否开机自启动，1为是，0为否（默认）。
 autostart=0
 
@@ -116,12 +118,12 @@ loadingAnimation=1
 
 [QSearch]
 
-default=https://www.baidu.com/s?wd={q}
-bd=https://www.baidu.com/s?wd={q}
-g   <google>=https://www.google.com/search?q={q}
-tb  <taobao>=http://s.taobao.com/search?q={q}
-wk=https://zh.wikipedia.org/w/index.php?search={q}
-m=https://developer.mozilla.org/zh-CN/search?q={q}
+default="https://www.baidu.com/s?wd={q}"
+bd="https://www.baidu.com/s?wd={q}"
+g   <google>="https://www.google.com/search?q={q}"
+tb  <taobao>="http://s.taobao.com/search?q={q}"
+wk="https://zh.wikipedia.org/w/index.php?search={q}"
+m="https://developer.mozilla.org/zh-CN/search?q={q}"
 
 
 ;----------------------------------------------------------------
@@ -145,20 +147,12 @@ m=https://developer.mozilla.org/zh-CN/search?q={q}
 ; - 可以设置以管理员启动程序，以及启动程序的参数，
 ;   需要设置的话程序路径需要用 " （引号）引起来，左边加上 *RunAs 将用管理员权限启动，右边带上启动参数
 
-[QRun]
+;[QRun]
 ;一般状态
-ie1="C:\Program Files\Internet Explorer\iexplore.exe"
+;ie1=run "C:\Program Files\Internet Explorer\iexplore.exe"
 
 ;管理员权限打开
-ie2=*runas "C:\Program Files\Internet Explorer\iexplore.exe"
-
-;全屏打开
-ie3 <full screen>="C:\Program Files\Internet Explorer\iexplore.exe" -k
-
-;管理员权限，全屏打开
-ie4=*runas "C:\Program Files\Internet Explorer\iexplore.exe" -k
-
-
+;ie2=run *runas "C:\Program Files\Internet Explorer\iexplore.exe"
 
 ;----------------------------------------------------------------
 ; ## Qbar 快速打开网页设置
@@ -179,7 +173,7 @@ ie4=*runas "C:\Program Files\Internet Explorer\iexplore.exe" -k
 ; - 可以在键名的右边加上 （0~n个空格）<xxx> 来作为备注提示
 
 [QWeb]
-cldocs=https://capslox.com/capslock-plus
+cldocs="https://capslox.com/capslock-plus"
 
 
 
@@ -208,52 +202,52 @@ clp=capslockplus
 ;----------------------------------------------------------------
 ; ## Qbar 的样式设置
 
-[QStyle]
+;[QStyle]
 ;边框颜色
 ;指定16种HTML基础颜色之一或6位的RGB颜色值(0x前缀可以省略)。例如：red、ffffaa、FFFFAA、0xFFFFAA。下面的颜色设置也一样。
-borderBackgroundColor=red
+;borderBackgroundColor=red
 
 ;边框四角的圆角程度，0为直角
-borderRadius=9
+;borderRadius=9
 
 ;文字输入框背景颜色
-textBackgroundColor=green
+;textBackgroundColor=green
 
 ;输入文字颜色
-textColor=ffffff
+;textColor=ffffff
 
 ;输入文字字体
 ;editFontName=Consolas bold
-textFontName=Hiragino Sans GB W6
+;textFontName=Hiragino Sans GB W6
 
 ;输入文字大小
-textFontSize=12
+;textFontSize=12
 
 ;提示列表字体
-listFontName=consolas
+;listFontName=consolas
 
 ;提示列表字体大小
-listFontSize=10
+;listFontSize=10
 
 ;提示列表背景颜色
-listBackgroundColor=blue
+;listBackgroundColor=blue
 
 ;提示列表文字颜色
-listColor=0x000000
+;listColor=0x000000
 
 ;提示列表行数
-listCount=5
+;listCount=5
 
 ;提示列表每行高度
-lineHeight=19
+;lineHeight=19
 
 ;进度条颜色
-progressColor=0x00cc99
+;progressColor=0x00cc99
 
 ;----------------------------------------------------------------;
 ; ## +T翻译设置
 
-[TTranslate]
+;[TTranslate]
 ;有道api接口
 ;翻译功能通过调用有道的api实现。
 
@@ -263,15 +257,15 @@ progressColor=0x00cc99
 ;翻译 API 类型，目前只能为 1
 ;0: 免费版有道 API（已不可使用，有道翻译不再提供）
 ;1: 收费版有道 API（默认值）
-apiType=1
+;apiType=1
 
 ;收费版申请的参数
 
 ;应用ID
-appPaidID=xxx
+;appPaidID=xxx
 
 ;应用密钥
-appPaidKey=xxx
+;appPaidKey=xxx
 
 ;曾经 Capslock+ 可以选择使用免费版或收费版的有道 API 来提供翻译功能，现在有道已经不再提供免费版 API，
 ;只能使用收费版的 API，以下与免费版 API 相关的参数已经废弃，如果你的设置文件中有使用，请删除掉。
@@ -280,9 +274,10 @@ appPaidKey=xxx
 
 ;----------------------------------------------------------------;
 
-)
+)"
 
-lang_settingsDemoFileContent_2:=(
+lang_settingsDemoFileContent_2 := "
+(
 ; ## 按键功能设置
 
 ; - 可设置的按键组合有：
@@ -720,9 +715,10 @@ keyfunc_wheel_up
 ; 滚轮下滑
 keyfunc_wheel_down
 
-)
+)"
 global lang_winsInfosRecorderIniInit:=""
-lang_winsInfosRecorderIniInit:=(
+lang_winsInfosRecorderIniInit := "
+(
 ;------------ Encoding: UTF-16 ------------
 ;这里记录着窗口的数据，不要手动修改本文件内容，点下右上角的"X"就好。
 
@@ -771,12 +767,14 @@ bindType=
 class_0=
 exe_0=
 id_0=
-)
+)"
 
 ; keysFunction.ahk
 global lang_kf_getDebugText:=""
-lang_kf_getDebugText:=(
+lang_kf_getDebugText := "
+(
 供 TabScript 调试用字符串
 点击"OK"将它复制到剪贴板
-)
+)"
 return
+}
